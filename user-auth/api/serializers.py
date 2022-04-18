@@ -36,6 +36,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'first_name', 'last_name',)
 
 
-class PasswordSerializer(serializers.Serializer):
+# class PasswordSerializer(serializers.Serializer):
+#     username = serializers.CharField(max_length=50)
+#     password = serializers.CharField(max_length=50)
+
+class PasswordResetSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=50)
-    password = serializers.CharField(max_length=50)
+    email = serializers.EmailField()

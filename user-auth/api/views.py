@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from .serializers import RegisterSerializer, UserSerializer, PasswordSerializer
+from django.db.models.query_utils import Q
+from .serializers import RegisterSerializer, UserSerializer, PasswordResetSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
 from  rest_framework.views import APIView
@@ -68,22 +69,39 @@ class LogoutView(APIView):
         }, status=status.HTTP_200_OK)  
 
 
-class ChangePasswordView(generics.CreateAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class =  PasswordSerializer
+class PasswordResetView(APIView):
+    serializer_class =  PasswordResetSerializer
 
     def post(self, request, format=None):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         username = serializer.data.get('username')
-        password = serializer.data.get('password')
+        email = serializer.data.get('email')
+
+        user = User.objects.get(Q(email=email),Q(username=username))
+        if user.exists():
+            
+
+
+
+
+
+# class ChangePasswordView(generics.CreateAPIView):
+#     permission_classes = (IsAuthenticated,)
+#     serializer_class =  PasswordSerializer
+
+#     def post(self, request, format=None):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         username = serializer.data.get('username')
+#         password = serializer.data.get('password')
                 
-        user = User.objects.get(username=username)
-        if user is not None:
-            user.set_password(password)
-            user.save()
-            return Response({'Success': 'Your password was successfully updated'}, status=status.HTTP_200_OK)
-        else:
-            return Response({'Error': 'Wrong. Check up and try again'}, status=status.HTTP_400_BAD_REQUEST)
+#         user = User.objects.get(username=username)
+#         if user is not None:
+#             user.set_password(password)
+#             user.save()
+#             return Response({'Success': 'Your password was successfully updated'}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({'Error': 'Wrong. Check up and try again'}, status=status.HTTP_400_BAD_REQUEST)
 
 

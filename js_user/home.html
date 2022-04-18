@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <script src="home.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-text">
+        <div class="portada"></div>
+        <div class="title-total">
+          <h2 id="user">Welcome</h2>
+          <div id="email" class="title">email: #</div>
+
+          <div class="desc">
+            <p id="firstname">First Name:</p>
+            <p id="lastname">Last Name:</p>
+          </div>
+          <div class="actions">
+            <button id="logout">Log Out</button>
+            <!-- <button id="change-password">Change Password</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // const pwd_change_url = "http://127.0.0.1:8000/api/auth/change-password//";
+      const logout_url = "http://127.0.0.1:8000/api/auth/logout/";
+
+      // $("change-password").addEventListener("click", async (e) => {
+      //   e.preventDefault();
+      //   const password = $("password").value;
+
+      //   const payload = {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: `Token ${auth}`,
+      //       "Content-Type": "application/json;charset=UTF-8",
+      //     },
+      //     body: JSON.stringify({
+      //       username: user,
+      //       password: password,
+      //     }),
+      //   };
+      //   await fetch(url, payload)
+      //     .then((res) => res.json())
+      //     .then((datadata) => {
+      //       console.log(data);
+      //       window.location.replace("/user/register_login.html");
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //     });
+      // });
+
+      $("logout").addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          await fetch(logout_url, {
+            method: "GET",
+            headers: {
+              Authorization: `Token ${auth}`,
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              console.log("logged out");
+              localStorage.removeItem("auth");
+              window.location.replace("/js_user/register_login.html");
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    </script>
+  </body>
+</html>
